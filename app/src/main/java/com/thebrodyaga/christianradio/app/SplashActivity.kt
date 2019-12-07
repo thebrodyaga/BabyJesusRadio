@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import com.thebrodyaga.christianradio.screen.base.BasePresenter
 import com.thebrodyaga.christianradio.app.App
+import com.thebrodyaga.christianradio.repository.RadioRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpView
 import moxy.presenter.InjectPresenter
@@ -39,10 +42,18 @@ class SplashActivity : BaseActivity(), SplashView {
 
 @InjectViewState
 class SplashPresenter @Inject constructor(
+    private val radioRepository: RadioRepository
 ) : BasePresenter<SplashView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.forward()
+        unSubscribeOnDestroy(
+            radioRepository.getAllRadios()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { viewState.forward() },
+                    { viewState.error() })
+        )
     }
 }
 

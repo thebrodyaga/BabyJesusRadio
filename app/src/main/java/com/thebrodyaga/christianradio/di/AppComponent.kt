@@ -8,6 +8,7 @@ import com.thebrodyaga.christianradio.app.AppActivity
 import com.thebrodyaga.christianradio.app.SplashActivity
 import com.thebrodyaga.christianradio.di.modules.NavigationModule
 import com.thebrodyaga.christianradio.navigation.RouterTransition
+import com.thebrodyaga.christianradio.screen.fragments.radio.list.RadioListFragment
 import dagger.BindsInstance
 import dagger.Component
 import ru.terrakok.cicerone.NavigatorHolder
@@ -22,6 +23,7 @@ interface AppComponent {
     fun inject(activity: AppActivity)
     fun inject(activity: SplashActivity)
     fun getSettingManager(): SettingManager
+    fun inject(fragment: RadioListFragment)
 
     @Component.Builder
     interface Builder {
