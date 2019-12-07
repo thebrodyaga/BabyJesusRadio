@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     //exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.10.6'
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
 
     //Moxy
     implementation "com.github.moxy-community:moxy:${moxy}"

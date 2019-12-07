@@ -9,7 +9,9 @@ import com.thebrodyaga.christianradio.R
 import com.thebrodyaga.christianradio.domine.entities.data.RadioDto
 import kotlinx.android.synthetic.main.item_radio.view.*
 
-class RadioListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RadioListAdapter constructor(
+    private val onRadioClick: (radioDto: RadioDto) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val list = mutableListOf<RadioDto>()
 
     fun setData(data: List<RadioDto>) {
@@ -35,12 +37,16 @@ class RadioListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private var item: RadioDto? = null
 
         init {
-            itemView.root_view.setOnClickListener {  }
+            itemView.root_view.setOnClickListener {
+                item?.also { onRadioClick.invoke(it) }
+            }
         }
 
         fun bind(radioDto: RadioDto) = with(itemView) {
+            item = radioDto
             radio_name.text = radioDto.radioName
             Glide.with(context)
                 .load(radioDto.radioImage)
