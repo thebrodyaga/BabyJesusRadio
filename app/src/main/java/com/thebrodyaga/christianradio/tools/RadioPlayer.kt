@@ -29,14 +29,14 @@ import java.lang.Exception
 
 
 class RadioPlayer constructor(
-        private val context: Context
+    private val context: Context
 ) : Player.EventListener {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var player = ExoPlayerFactory.newSimpleInstance(context)
     private val dataSourceFactory = DefaultDataSourceFactory(
-            context,
-            getUserAgent(context, context.getString(R.string.app_name))
+        context,
+        getUserAgent(context, context.getString(R.string.app_name))
     )
     private val sourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
     var currentRadio: RadioDto? = null
@@ -47,6 +47,10 @@ class RadioPlayer constructor(
     }
 
     fun playRadio(radio: RadioDto, listener: Player.EventListener, playWhenReady: Boolean = true) {
+        if (currentRadio == radio) {
+            togglePlay()
+            return
+        }
         currentRadio = radio
         val source = sourceFactory.createMediaSource(Uri.parse(radio.radioUrl))
         player.prepare(source)
@@ -80,7 +84,8 @@ class RadioPlayer constructor(
 
     fun release() {
         Timber.i("release")
-        player.release()
+        //todo перенести плеер в сервис, там создавать инстанст и релизить
+        player.stop()
         currentRadio = null
         loadImage?.dispose()
         startService(PlayerService.ACTION_STOP)
@@ -122,31 +127,33 @@ class RadioPlayer constructor(
         start(null)
         loadImage?.dispose()
         loadImage = loadImage(currentRadio.radioImage)
-                .map { bitmapArray(it) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    start(it)
-                }, {
-                    start(null)
-                    Timber.i(it)
-                })
+            .map { bitmapArray(it) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                start(it)
+            }, {
+                start(null)
+                Timber.i(it)
+            })
 
     }
 
     private fun loadImage(utl: String) =
-            Observable.create<Bitmap> {
-                try {
-                    it.onNext(Glide.with(context)
-                            .asBitmap()
-                            .load(utl)
-                            .submit()
-                            .get())
-                } catch (e: Exception) {
-                    it.tryOnError(e)
-                }
-
+        Observable.create<Bitmap> {
+            try {
+                it.onNext(
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(utl)
+                        .submit()
+                        .get()
+                )
+            } catch (e: Exception) {
+                it.tryOnError(e)
             }
+
+        }
 
     private fun bitmapArray(bitmap: Bitmap): ByteArray {
         val bStream = ByteArrayOutputStream()

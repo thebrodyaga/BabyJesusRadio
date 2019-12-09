@@ -69,14 +69,14 @@ class PlayerService : Service() {
 
     private fun playStart(intent: Intent) {
         val currentRadio = player.currentRadio ?: return
-        val action = generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_MUST_PAUSE)
+        val action = generateAction(R.drawable.ic_pause, "Pause", ACTION_MUST_PAUSE)
         val builder = buildNotification(action, currentRadio, intent)
         startForeground(PLAYER_NOTIFICATION, builder.build())
     }
 
     private fun playPause(intent: Intent) {
         val currentRadio = player.currentRadio ?: return
-        val action = generateAction(android.R.drawable.ic_media_play, "Play", ACTION_MUST_PLAY)
+        val action = generateAction(R.drawable.ic_play, "Play", ACTION_MUST_PLAY)
         val builder = buildNotification(action, currentRadio, intent)
         stopForeground(false)
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -117,16 +117,26 @@ class PlayerService : Service() {
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setContentTitle(currentRadio.radioName)
             .setDeleteIntent(pendingIntent)
-        style.setShowActionsInCompactView(0, 1, 2)
+        style.setShowActionsInCompactView(0, 1, 2, 3, 4)
         builder.setStyle(style)
         bitmapArray?.also {
             val bitmap: Bitmap = BitmapFactory
                 .decodeByteArray(it, 0, it.size, bitmapOptions)
             builder.setLargeIcon(bitmap)
         }
+        var actionNew = generateAction(R.drawable.ic_shuffle, "Play", ACTION_MUST_PLAY)
+        builder.addAction(actionNew)
+
+        actionNew = generateAction(R.drawable.ic_skip_previous, "Play", ACTION_MUST_PLAY)
+        builder.addAction(actionNew)
+
         builder.addAction(action)
-        builder.addAction(action)
-        builder.addAction(action)
+
+        actionNew = generateAction(R.drawable.ic_skip_next, "Play", ACTION_MUST_PLAY)
+        builder.addAction(actionNew)
+
+        actionNew = generateAction(R.drawable.ic_favorite, "Play", ACTION_MUST_PLAY)
+        builder.addAction(actionNew)
         return builder
     }
 
