@@ -6,8 +6,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.thebrodyaga.christianradio.repository.RadioRepository
-import com.thebrodyaga.christianradio.tools.AudioPlayer
-import com.thebrodyaga.christianradio.tools.RecordVoice
+import com.thebrodyaga.christianradio.tools.RadioPlayer
 import com.thebrodyaga.christianradio.tools.SettingManager
 import dagger.Module
 import dagger.Provides
@@ -22,14 +21,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRecordVoice(
-        audioPlayer: AudioPlayer,
-        context: Context
-    ): RecordVoice = RecordVoice(audioPlayer, context)
-
-    @Provides
-    @Singleton
-    fun provideAudioPlayer(context: Context): AudioPlayer = AudioPlayer(context)
+    fun provideRadioPlayer(context: Context): RadioPlayer = RadioPlayer(context)
 
     @Provides
     @Singleton

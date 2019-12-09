@@ -12,9 +12,7 @@ import com.thebrodyaga.christianradio.screen.base.BaseFragment
 import com.thebrodyaga.christianradio.BuildConfig
 import com.thebrodyaga.christianradio.R
 import com.thebrodyaga.christianradio.screen.isSystemDarkMode
-import com.thebrodyaga.christianradio.tools.AudioPlayer
-import com.thebrodyaga.christianradio.tools.RecordVoice
-import com.thebrodyaga.christianradio.app.App
+import com.thebrodyaga.christianradio.tools.RadioPlayer
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
@@ -25,10 +23,7 @@ class AppActivity : BaseActivity() {
     lateinit var router: RouterTransition
 
     @Inject
-    lateinit var recordVoice: RecordVoice
-
-    @Inject
-    lateinit var audioPlayer: AudioPlayer
+    lateinit var radioPlayer: RadioPlayer
 
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
@@ -57,15 +52,11 @@ class AppActivity : BaseActivity() {
     override fun onResumeFragments() {
         super.onResumeFragments()
         navigatorHolder.setNavigator(navigator)
-        recordVoice.onAppShow()
-        audioPlayer.onAppShow()
     }
 
     override fun onPause() {
         navigatorHolder.removeNavigator()
         super.onPause()
-        recordVoice.onAppHide()
-        audioPlayer.onAppHide()
     }
 
     override fun onBackPressed() {

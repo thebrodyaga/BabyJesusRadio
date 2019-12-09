@@ -15,6 +15,7 @@
     <ImageView
         android:id="@+id/radio_image"
         android:layout_width="56dp"
+        android:background="@drawable/background_round"
         android:layout_height="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/radio_name"

@@ -8,13 +8,14 @@ import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.thebrodyaga.christianradio.R
 import com.thebrodyaga.christianradio.app.App
 import com.thebrodyaga.christianradio.domine.entities.data.RadioDto
 import com.thebrodyaga.christianradio.navigation.Screens
 import com.thebrodyaga.christianradio.screen.adapters.RadioListAdapter
 import com.thebrodyaga.christianradio.screen.base.BaseFragment
-import com.thebrodyaga.christianradio.tools.AudioPlayer
+import com.thebrodyaga.christianradio.tools.RadioPlayer
 import kotlinx.android.synthetic.main.fragment_radio_list.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -23,14 +24,14 @@ import javax.inject.Inject
 class RadioListFragment : BaseFragment(), RadioListView,
     Toolbar.OnMenuItemClickListener, Player.EventListener {
 
-    private val adapter = RadioListAdapter { audioPlayer.playAudio(Uri.parse(it.radioUrl), this) }
+    private val adapter = RadioListAdapter { radioPlayer.playRadio(it, this) }
 
     @Inject
     @InjectPresenter
     lateinit var presenter: RadioListPresenter
 
     @Inject
-    lateinit var audioPlayer: AudioPlayer
+    lateinit var radioPlayer: RadioPlayer
 
     @ProvidePresenter
     fun providePresenter() = presenter

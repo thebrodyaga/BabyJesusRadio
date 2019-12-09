@@ -10,6 +10,7 @@ import com.thebrodyaga.christianradio.di.modules.NavigationModule
 import com.thebrodyaga.christianradio.navigation.RouterTransition
 import com.thebrodyaga.christianradio.screen.fragments.radio.list.RadioListFragment
 import com.thebrodyaga.christianradio.screen.fragments.settings.all.SettingsFragment
+import com.thebrodyaga.christianradio.service.PlayerService
 import dagger.BindsInstance
 import dagger.Component
 import ru.terrakok.cicerone.NavigatorHolder
@@ -26,6 +27,7 @@ interface AppComponent {
     fun getSettingManager(): SettingManager
     fun inject(fragment: RadioListFragment)
     fun inject(settingsFragment: SettingsFragment)
+    fun inject(service: PlayerService)
 
     @Component.Builder
     interface Builder {

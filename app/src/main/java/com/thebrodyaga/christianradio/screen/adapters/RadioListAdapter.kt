@@ -40,6 +40,7 @@ class RadioListAdapter constructor(
         private var item: RadioDto? = null
 
         init {
+            itemView.radio_image.clipToOutline = true
             itemView.root_view.setOnClickListener {
                 item?.also { onRadioClick.invoke(it) }
             }

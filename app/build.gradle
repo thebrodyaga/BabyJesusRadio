@@ -19,7 +19,7 @@ android {
     }
     buildTypes {
         debug {
-            manifestPlaceholders = [enableCrashReporting: "false"]
+            manifestPlaceholders = [enableCrashReporting: "true"]
         }
         release {
             shrinkResources true
