@@ -15,6 +15,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util.getUserAgent
 import com.thebrodyaga.christianradio.R
+import com.thebrodyaga.christianradio.domine.entities.data.PlayingRadio
 import com.thebrodyaga.christianradio.domine.entities.data.RadioDto
 import com.thebrodyaga.christianradio.service.PlayerService
 import io.reactivex.Observable
@@ -27,7 +28,6 @@ import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
-
 class RadioPlayer constructor(
     private val context: Context
 ) : Player.EventListener {
@@ -39,20 +39,20 @@ class RadioPlayer constructor(
         getUserAgent(context, context.getString(R.string.app_name))
     )
     private val sourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
-    var currentRadio: RadioDto? = null
+    var currentRadio: PlayingRadio? = null
         private set
 
     init {
         player.addListener(this)
     }
 
-    fun playRadio(radio: RadioDto, listener: Player.EventListener, playWhenReady: Boolean = true) {
+    fun playRadio(radio: PlayingRadio, playWhenReady: Boolean = true) {
         if (currentRadio == radio) {
             togglePlay()
             return
         }
         currentRadio = radio
-        val source = sourceFactory.createMediaSource(Uri.parse(radio.radioUrl))
+        val source = sourceFactory.createMediaSource(Uri.parse(radio.radioDto.radioUrl))
         player.prepare(source)
         if (playWhenReady)
             startPlayer()
@@ -91,19 +91,6 @@ class RadioPlayer constructor(
         startService(PlayerService.ACTION_STOP)
     }
 
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        when (playbackState) {
-            Player.STATE_IDLE -> {
-            }
-            Player.STATE_BUFFERING -> {
-            }
-            Player.STATE_READY -> {
-            }
-            Player.STATE_ENDED -> {
-            }
-        }
-    }
-
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         Timber.i("onIsPlayingChanged isPlaying = $isPlaying")
         startService(if (isPlaying) PlayerService.ACTION_PLAY else PlayerService.ACTION_PAUSE)
@@ -126,7 +113,7 @@ class RadioPlayer constructor(
         }
         start(null)
         loadImage?.dispose()
-        loadImage = loadImage(currentRadio.radioImage)
+        loadImage = loadImage(currentRadio.radioDto.radioImage)
             .map { bitmapArray(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -23,21 +23,18 @@ class PlayerService : Service() {
     @Inject
     lateinit var player: RadioPlayer
 
-    private var iconHeight = 0
-    private var iconWidth = 0
-    private val bitmapOptions = BitmapFactory.Options()
-        .apply {
-            outHeight = iconHeight
-            outWidth = iconWidth
-        }
+    private lateinit var bitmapOptions: BitmapFactory.Options
 
     override fun onCreate() {
         App.appComponent.inject(this)
         super.onCreate()
-        iconHeight = resources
-            .getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
-        iconWidth = resources
-            .getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
+        bitmapOptions = BitmapFactory.Options()
+            .apply {
+                outHeight = resources
+                    .getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
+                outWidth = resources
+                    .getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
+            }
         createNotificationChannel()
         Timber.i("onCreate")
     }
@@ -70,14 +67,14 @@ class PlayerService : Service() {
     private fun playStart(intent: Intent) {
         val currentRadio = player.currentRadio ?: return
         val action = generateAction(R.drawable.ic_pause, "Pause", ACTION_MUST_PAUSE)
-        val builder = buildNotification(action, currentRadio, intent)
+        val builder = buildNotification(action, currentRadio.radioDto, intent)
         startForeground(PLAYER_NOTIFICATION, builder.build())
     }
 
     private fun playPause(intent: Intent) {
         val currentRadio = player.currentRadio ?: return
         val action = generateAction(R.drawable.ic_play, "Play", ACTION_MUST_PLAY)
-        val builder = buildNotification(action, currentRadio, intent)
+        val builder = buildNotification(action, currentRadio.radioDto, intent)
         stopForeground(false)
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(PLAYER_NOTIFICATION, builder.build())

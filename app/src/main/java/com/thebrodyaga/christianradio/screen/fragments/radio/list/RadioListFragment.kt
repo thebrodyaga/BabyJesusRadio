@@ -1,16 +1,14 @@
 package com.thebrodyaga.christianradio.screen.fragments.radio.list
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.thebrodyaga.christianradio.R
 import com.thebrodyaga.christianradio.app.App
+import com.thebrodyaga.christianradio.domine.entities.data.PlayingRadio
 import com.thebrodyaga.christianradio.domine.entities.data.RadioDto
 import com.thebrodyaga.christianradio.navigation.Screens
 import com.thebrodyaga.christianradio.screen.adapters.RadioListAdapter
@@ -21,10 +19,9 @@ import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
-class RadioListFragment : BaseFragment(), RadioListView,
-    Toolbar.OnMenuItemClickListener, Player.EventListener {
+class RadioListFragment : BaseFragment(), RadioListView, Toolbar.OnMenuItemClickListener {
 
-    private val adapter = RadioListAdapter { radioPlayer.playRadio(it, this) }
+    private val adapter = RadioListAdapter { radioPlayer.playRadio(PlayingRadio(it, false)) }
 
     @Inject
     @InjectPresenter
