@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
-    android:background="@drawable/background_ripple"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/background_ripple"
     android:orientation="vertical"
     android:paddingStart="16dp"
     android:paddingTop="8dp"
@@ -14,14 +14,28 @@
 
     <ImageView
         android:id="@+id/radio_image"
-        android:layout_width="56dp"
+        android:layout_width="@dimen/icon_radio_list"
+        android:layout_height="@dimen/icon_radio_list"
         android:background="@drawable/background_round"
-        android:layout_height="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/radio_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <FrameLayout
+        android:id="@+id/radio_playing_layout"
+        android:layout_width="@dimen/icon_radio_list"
+        android:layout_height="@dimen/icon_radio_list"
+        android:background="@drawable/background_round_opacity"
+        android:foregroundTint="@color/colorPrimary"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/radio_image"
+        app:layout_constraintEnd_toEndOf="@+id/radio_image"
+        app:layout_constraintStart_toStartOf="@+id/radio_image"
+        app:layout_constraintTop_toTopOf="@+id/radio_image"
+        tools:foreground="@drawable/ic_play_56dp"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/radio_name"

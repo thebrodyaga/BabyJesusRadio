@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 class RadioListFragment : BaseFragment(), RadioListView, Toolbar.OnMenuItemClickListener {
 
-    private val adapter = RadioListAdapter { radioPlayer.playRadio(PlayingRadio(it, false)) }
+    private lateinit var adapter: RadioListAdapter
 
     @Inject
     @InjectPresenter
@@ -35,6 +35,10 @@ class RadioListFragment : BaseFragment(), RadioListView, Toolbar.OnMenuItemClick
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
+        adapter = RadioListAdapter(
+            { radioPlayer.playRadio(PlayingRadio(it, false)) },
+            radioPlayer
+        )
         super.onCreate(savedInstanceState)
     }
 

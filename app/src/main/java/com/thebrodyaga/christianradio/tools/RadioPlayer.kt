@@ -27,11 +27,16 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
+import java.util.concurrent.CopyOnWriteArraySet
 
 class RadioPlayer constructor(
     private val context: Context
 ) : Player.EventListener {
 
+
+    private val playingListeners: CopyOnWriteArraySet<
+                (currentRadio: PlayingRadio?, isPlaying: Boolean) -> Unit
+            > = CopyOnWriteArraySet()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var player = ExoPlayerFactory.newSimpleInstance(context)
     private val dataSourceFactory = DefaultDataSourceFactory(
@@ -82,6 +87,12 @@ class RadioPlayer constructor(
         player.playbackState
     }
 
+    fun addPlayingListeners(listener: (currentRadio: PlayingRadio?, isPlaying: Boolean) -> Unit)=
+        playingListeners.add(listener)
+
+    fun removePlayingListeners(listener: (currentRadio: PlayingRadio?, isPlaying: Boolean) -> Unit) =
+        playingListeners.remove(listener)
+
     fun release() {
         Timber.i("release")
         //todo перенести плеер в сервис, там создавать инстанст и релизить
@@ -94,6 +105,7 @@ class RadioPlayer constructor(
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         Timber.i("onIsPlayingChanged isPlaying = $isPlaying")
         startService(if (isPlaying) PlayerService.ACTION_PLAY else PlayerService.ACTION_PAUSE)
+        playingListeners.forEach { it.invoke(currentRadio, isPlaying) }
     }
 
     private var loadImage: Disposable? = null
