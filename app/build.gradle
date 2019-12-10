@@ -80,6 +80,7 @@ dependencies {
 
     //exoplayer
     implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.10.8'
 
     //Moxy
     implementation "com.github.moxy-community:moxy:${moxy}"

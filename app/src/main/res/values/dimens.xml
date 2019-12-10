@@ -10,5 +10,6 @@
     <dimen name="fab_cradle_rounded_corner_radius">8dp</dimen>
     <dimen name="ab_cradle_vertical_offset">0dp</dimen>
     <dimen name="icon_radio_list">56dp</dimen>
+    <dimen name="bottom_sheet_player_pick_height">56dp</dimen>
 
 </resources>

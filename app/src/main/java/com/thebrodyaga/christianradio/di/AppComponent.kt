@@ -8,6 +8,7 @@ import com.thebrodyaga.christianradio.app.AppActivity
 import com.thebrodyaga.christianradio.app.SplashActivity
 import com.thebrodyaga.christianradio.di.modules.NavigationModule
 import com.thebrodyaga.christianradio.navigation.RouterTransition
+import com.thebrodyaga.christianradio.screen.fragments.main.MainFragment
 import com.thebrodyaga.christianradio.screen.fragments.radio.list.RadioListFragment
 import com.thebrodyaga.christianradio.screen.fragments.settings.all.SettingsFragment
 import com.thebrodyaga.christianradio.service.PlayerService
@@ -28,6 +29,7 @@ interface AppComponent {
     fun inject(fragment: RadioListFragment)
     fun inject(settingsFragment: SettingsFragment)
     fun inject(service: PlayerService)
+    fun inject(fragment: MainFragment)
 
     @Component.Builder
     interface Builder {

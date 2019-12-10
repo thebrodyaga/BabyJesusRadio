@@ -46,7 +46,7 @@ class AppActivity : BaseActivity() {
             supportFragmentManager.registerFragmentLifecycleCallbacks(FragmentLifecycle(), true)
         setContentView(R.layout.layout_fragemnt_container)
         if (currentFragment == null)
-            router.newRootScreen(Screens.RadioListScreen)
+            router.newRootScreen(Screens.MainScreen)
     }
 
     override fun onResumeFragments() {
